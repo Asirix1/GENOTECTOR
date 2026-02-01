@@ -10,6 +10,8 @@ md_py=$7
 
 time bwa mem -t $threads $reference_path $fastq_dir/*R1*.fastq.gz $fastq_dir/*R2*.fastq.gz |samtools view  -b -@ $threads -h -F 4 |samtools sort -@ $threads -o $work_dir/${sample}_coord_sorted.bam
 
+time samtools index -@ $threads ${work_dir}/${sample}_coord_sorted.bam
+
 cd ./picard
 time java -jar build/libs/picard.jar AddOrReplaceReadGroups -I $work_dir/${sample}_coord_sorted.bam -SO queryname -O ${work_dir}/${sample}_query_name_sorted_with_rg.bam -RGID group1 -RGLB lib1 -RGPL illumina -RGPU unit1 -RGSM sample1
 
